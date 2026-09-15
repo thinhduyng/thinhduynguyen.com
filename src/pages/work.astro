@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { fullName } from '../data/profile';
+---
+
+<BaseLayout title={`${fullName} — Work`}>
+  <div class="sheet">
+    <div class="sheet__inner">
+      <div class="toolbar">
+        <a class="toolbar__link hover-underline" href="/">Back</a>
+      </div>
+
+      <div class="plate">
+        <p class="plate__note">working on it =))</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sheet {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    padding: clamp(26px, 4.4vh, 64px) clamp(26px, 5vw, 96px);
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font-family: var(--font-heading);
+  }
+
+  .sheet__inner {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(12.5px, 1.15vw, 15px);
+    letter-spacing: 0.06em;
+    color: var(--page-ink-muted);
+  }
+
+  .toolbar__link {
+    padding: 22px 0 4px;
+    margin-top: -22px;
+  }
+
+  .plate {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(64px, 16vh, 200px) 0 clamp(56px, 14vh, 170px);
+  }
+
+  .plate__note {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(24px, 3.4vw, 46px);
+    letter-spacing: 0.03em;
+    text-wrap: balance;
+  }
+</style>
