@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { contact, fullName, profile, resumeFileName } from '../data/profile';
+import { contact, profile, resumeFileName, siteName } from '../data/profile';
 import {
   education,
   experience,
@@ -10,7 +10,7 @@ import {
 } from '../data/resume';
 ---
 
-<BaseLayout title={`${fullName} — Résumé`}>
+<BaseLayout title={`${siteName} | Résumé`}>
   <div class="sheet">
     <div class="sheet__inner">
       <div class="toolbar no-print">

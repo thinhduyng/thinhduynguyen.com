@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardHero from '../components/CardHero.astro';
-import { profile, fullName } from '../data/profile';
+import { profile, siteName } from '../data/profile';
 ---
 
-<BaseLayout title={fullName}>
+<BaseLayout title={siteName}>
   <CardHero profile={profile} />
 </BaseLayout>

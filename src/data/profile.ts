@@ -50,7 +50,10 @@ export const profile: Profile = {
   ],
 };
 
-/** "Nguyễn Duy Thịnh" — for <title> and meta description. */
+/** Handle used as the site name in <title>. */
+export const siteName = 'holocodedao';
+
+/** "Nguyễn Duy Thịnh" — for meta description and the résumé filename. */
 export const fullName = `${profile.familyName} ${profile.middleName} ${profile.firstName}`;
 
 /** Default meta description, kept in step with the profile above. */
