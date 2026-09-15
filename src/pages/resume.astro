@@ -1,0 +1,359 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, fullName, profile, resumeFileName } from '../data/profile';
+import {
+  education,
+  experience,
+  projects,
+  resumeSummary,
+  skills,
+} from '../data/resume';
+---
+
+<BaseLayout title={`${fullName} — Résumé`}>
+  <div class="sheet">
+    <div class="sheet__inner">
+      <div class="toolbar no-print">
+        <a class="toolbar__link hover-underline" href="/">Back</a>
+        <a
+          class="toolbar__link toolbar__link--pdf hover-underline"
+          href="/resume.pdf"
+          download={resumeFileName}>Download PDF</a
+        >
+      </div>
+
+      <header class="masthead">
+        <h1 class="masthead__name" lang="vi">
+          <span class="family-name">{profile.familyName}</span>{' '}<span
+            class="middle-name">{profile.middleName}</span
+          >{' '}<span
+            class="first-name">{profile.firstName}</span
+          >
+        </h1>
+        <p class="masthead__subtitle">{profile.subtitle}</p>
+        <ul class="masthead__contact">
+          <li>{contact.phone}</li>
+          <li><a class="hover-underline" href={`mailto:${contact.email}`}>{contact.email}</a></li>
+          <li><a class="hover-underline" href={contact.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a class="hover-underline" href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li>{contact.location}</li>
+        </ul>
+      </header>
+
+      <p class="summary">{resumeSummary}</p>
+
+      <section aria-labelledby="education-heading">
+        <h2 id="education-heading" class="section-heading">Education</h2>
+        {
+          education.map((entry) => (
+            <div class="entry">
+              <div class="entry__row">
+                <h3 class="entry__title">{entry.institution}</h3>
+                <span class="entry__dates">{entry.dateRange}</span>
+              </div>
+              <div class="entry__row entry__row--sub">
+                <span class="entry__detail">{entry.degree}</span>
+                <span class="entry__location">{entry.location}</span>
+              </div>
+            </div>
+          ))
+        }
+      </section>
+
+      <section aria-labelledby="experience-heading">
+        <h2 id="experience-heading" class="section-heading">Experience</h2>
+        {
+          experience.map((entry) => (
+            <div class="entry">
+              <div class="entry__row">
+                <h3 class="entry__title">{entry.role}</h3>
+                <span class="entry__dates">{entry.dateRange}</span>
+              </div>
+              <div class="entry__row entry__row--sub">
+                <span class="entry__detail">{entry.organization}</span>
+                <span class="entry__location">{entry.location}</span>
+              </div>
+              <ul class="entry__highlights">
+                {entry.highlights.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+
+      <section aria-labelledby="projects-heading">
+        <h2 id="projects-heading" class="section-heading">Projects</h2>
+        {
+          projects.map((project) => (
+            <div class="entry">
+              <div class="entry__row">
+                <h3 class="entry__title">
+                  <a
+                    class="hover-underline"
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {project.name}
+                  </a>
+                </h3>
+                <span class="entry__dates">{project.dateRange}</span>
+              </div>
+              <p class="entry__stack">
+                {project.stack} · {project.team}
+              </p>
+              <ul class="entry__highlights">
+                {project.highlights.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+
+      <section aria-labelledby="skills-heading">
+        <h2 id="skills-heading" class="section-heading">Skills</h2>
+        <dl class="skills">
+          {
+            skills.map((group) => (
+              <>
+                <dt>{group.category}</dt>
+                <dd>{group.items}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sheet {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    padding: clamp(26px, 4.4vh, 64px) clamp(26px, 5vw, 96px);
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font-family: var(--font-heading);
+  }
+
+  .sheet__inner {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(28px, 4.4vh, 48px);
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(12.5px, 1.15vw, 15px);
+    letter-spacing: 0.06em;
+    color: var(--page-ink-muted);
+  }
+
+  .toolbar__link {
+    padding: 22px 0 4px;
+    margin-top: -22px;
+  }
+
+  .toolbar__link--pdf {
+    border-bottom-color: var(--page-rule-hover);
+  }
+
+  .masthead {
+    text-align: center;
+  }
+
+  .masthead__name {
+    font-weight: 500;
+    font-size: clamp(30px, 3.6vw, 52px);
+    line-height: 1.06;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .masthead__subtitle {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(15px, 1.6vw, 21px);
+    letter-spacing: 0.035em;
+    margin-top: 10px;
+    color: var(--page-ink-soft);
+  }
+
+  .masthead__contact {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px clamp(16px, 2vw, 30px);
+    margin: clamp(14px, 2.4vh, 24px) 0 0;
+    padding: 0;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(12.5px, 1.15vw, 15.5px);
+    letter-spacing: 0.06em;
+    font-feature-settings: 'tnum';
+    color: var(--page-ink-muted);
+  }
+
+  .masthead__contact a {
+    padding: 22px 0 3px;
+    margin-top: -22px;
+  }
+
+  .summary {
+    max-width: 62ch;
+    margin: 0 auto;
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.25vw, 16.5px);
+    line-height: 1.68;
+    text-align: justify;
+    hyphens: auto;
+    color: var(--page-ink-soft);
+    text-wrap: pretty;
+  }
+
+  .section-heading {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(14px, 1.3vw, 17px);
+    letter-spacing: 0.14em;
+    color: var(--page-ink);
+    padding-bottom: 7px;
+    border-bottom: 1px solid var(--color-divider);
+    margin: 0 0 15px;
+  }
+
+  .entry + .entry {
+    margin-top: clamp(18px, 2.6vh, 30px);
+  }
+
+  .entry__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .entry__title {
+    font-family: var(--font-heading);
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(16px, 1.55vw, 20px);
+    letter-spacing: 0.025em;
+    margin: 0;
+  }
+
+  .entry__title a {
+    padding: 20px 0 3px;
+    margin-top: -20px;
+  }
+
+  .entry__dates {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(12.5px, 1.15vw, 15.5px);
+    letter-spacing: 0.06em;
+    font-feature-settings: 'tnum';
+    color: var(--page-ink-muted);
+    white-space: nowrap;
+  }
+
+  .entry__row--sub {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: clamp(13.5px, 1.2vw, 16px);
+    color: var(--page-ink-soft);
+  }
+
+  .entry__location {
+    font-family: var(--font-heading);
+    font-style: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  .entry__stack {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: clamp(13px, 1.15vw, 15.5px);
+    color: var(--page-ink-soft);
+    margin: 3px 0 0;
+  }
+
+  .entry__highlights {
+    list-style: disc;
+    margin: 9px 0 0;
+    padding-left: 1.2em;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-family: var(--font-body);
+    font-size: clamp(13.5px, 1.2vw, 15.5px);
+    line-height: 1.62;
+    color: var(--page-ink-soft);
+    text-wrap: pretty;
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr);
+    gap: 10px clamp(18px, 2.4vw, 34px);
+    align-items: baseline;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: clamp(13.5px, 1.2vw, 15.5px);
+    line-height: 1.6;
+    color: var(--page-ink-soft);
+  }
+
+  .skills dt {
+    font-family: var(--font-heading);
+    font-variant: small-caps;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    font-size: clamp(13.5px, 1.25vw, 16.5px);
+    color: var(--page-ink);
+  }
+
+  .skills dd {
+    margin: 0;
+  }
+
+  @media print {
+    @page {
+      size: letter;
+      margin: 13mm 15mm;
+    }
+
+    .sheet {
+      background: #fff;
+      padding: 0;
+      min-height: 0;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+    .entry {
+      break-inside: avoid;
+    }
+  }
+</style>

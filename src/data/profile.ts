@@ -5,18 +5,25 @@
 
 export interface ProfileLink {
   label: string;
-  /**
-   * Anything starting with `http` is treated as an outbound link and opens in
-   * a new tab; `/work`, `#resume` and `mailto:` targets stay in place.
-   */
+  /** HTTP links open in a new tab. */
   href: string;
 }
+
+export const contact = {
+  phone: '+84 905 020 734',
+  email: 'duythinhnguyen1703@gmail.com',
+  github: 'https://github.com/thinhduyng',
+  linkedin: 'https://www.linkedin.com/in/ndthinh23/',
+  location: 'Ho Chi Minh City, Vietnam',
+};
 
 export interface Profile {
   /** Family name — rendered in caps, first, per Vietnamese name order. */
   familyName: string;
-  /** Given name — rendered in small caps. */
-  givenName: string;
+  /** Middle name — rendered between the family and first names. */
+  middleName: string;
+  /** First name — rendered last, per Vietnamese name order. */
+  firstName: string;
   subtitle: string;
   phone: string;
   institution: string;
@@ -27,24 +34,38 @@ export interface Profile {
 
 export const profile: Profile = {
   familyName: 'Nguyễn',
-  givenName: 'Duy Thịnh',
+  middleName: 'Duy',
+  firstName: 'Thịnh',
   subtitle: 'B.Sc. Candidate, Software Engineering',
-  phone: '+84 905 020 734',
+  phone: contact.phone,
   institution: 'VNUHCM, University of Science',
   faculty: 'Faculty of Information Technology',
-  location: 'Ho Chi Minh City, Vietnam',
+  location: contact.location,
   links: [
     { label: 'Work', href: '/work' },
-    // TODO: these three are still the artboard's placeholders.
-    { label: 'GitHub', href: 'https://github.com/thinhduyng' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ndthinh23/' },
-    { label: 'Résumé', href: '#resume' },
-    { label: 'Email', href: 'mailto:duythinhnguyen1703@gmail.com' },
+    { label: 'GitHub', href: contact.github },
+    { label: 'LinkedIn', href: contact.linkedin },
+    { label: 'Résumé', href: '/resume' },
+    { label: 'Email', href: `mailto:${contact.email}` },
   ],
 };
 
 /** "Nguyễn Duy Thịnh" — for <title> and meta description. */
-export const fullName = `${profile.familyName} ${profile.givenName}`;
+export const fullName = `${profile.familyName} ${profile.middleName} ${profile.firstName}`;
 
 /** Default meta description, kept in step with the profile above. */
 export const siteDescription = `${fullName} — ${profile.subtitle}. ${profile.institution}.`;
+
+/** Strips Vietnamese diacritics (including đ/Đ, which NFD doesn't decompose) for filenames. */
+const toAsciiSlug = (value: string) =>
+  value
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .trim()
+    .split(/\s+/)
+    .join('-');
+
+/** "Nguyen-Duy-Thinh-Resume.pdf" — the filename offered when downloading the résumé PDF. */
+export const resumeFileName = `${toAsciiSlug(fullName)}-Resume.pdf`;

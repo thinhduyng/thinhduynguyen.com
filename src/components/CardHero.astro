@@ -1,7 +1,4 @@
 ---
-/*
- * The artboard drives the narrow/wide layout with a JS resize listener
- */
 import type { Profile } from '../data/profile';
 
 interface Props {
@@ -14,7 +11,8 @@ const {
   institution,
   faculty,
   familyName,
-  givenName,
+  middleName,
+  firstName,
   subtitle,
   location,
   links,
@@ -35,8 +33,10 @@ const isExternal = (href: string) => href.startsWith('http');
 
     <div class="hero__plate">
       <h1 class="hero__name" lang="vi">
-        <span class="hero__family">{familyName}</span>{' '}<span
-          class="hero__given">{givenName}</span
+        <span class="family-name">{familyName}</span>{' '}<span
+          class="middle-name">{middleName}</span
+        >{' '}<span
+          class="first-name">{firstName}</span
         >
       </h1>
       <p class="hero__subtitle">{subtitle}</p>
@@ -47,7 +47,7 @@ const isExternal = (href: string) => href.startsWith('http');
       {
         links.map(({ label, href }) => (
           <a
-            class="colophon__link"
+            class="colophon__link hover-underline"
             href={href}
             {...(isExternal(href)
               ? { target: '_blank', rel: 'noopener noreferrer' }
@@ -139,14 +139,6 @@ const isExternal = (href: string) => href.startsWith('http');
     text-wrap: balance;
   }
 
-  .hero__family {
-    text-transform: uppercase;
-  }
-
-  .hero__given {
-    font-variant: small-caps;
-  }
-
   .hero__subtitle {
     font-variant: small-caps;
     font-weight: 500;
@@ -174,16 +166,6 @@ const isExternal = (href: string) => href.startsWith('http');
     /* Padding grows the pointer/touch target without moving the baseline. */
     padding: 24px 0 4px;
     margin-top: -24px;
-    border-bottom: 1px solid transparent;
-    transition:
-      border-color 200ms ease,
-      color 200ms ease;
-  }
-
-  .colophon__link:hover,
-  .colophon__link:focus-visible {
-    border-bottom-color: var(--page-rule-hover);
-    color: var(--page-ink);
   }
 
   /* — narrow: the artboard's < 680px layout — */
