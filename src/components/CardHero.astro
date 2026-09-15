@@ -1,0 +1,218 @@
+---
+/*
+ * The artboard drives the narrow/wide layout with a JS resize listener
+ */
+import type { Profile } from '../data/profile';
+
+interface Props {
+  profile: Profile;
+}
+
+const { profile } = Astro.props;
+const {
+  phone,
+  institution,
+  faculty,
+  familyName,
+  givenName,
+  subtitle,
+  location,
+  links,
+} = profile;
+
+const isExternal = (href: string) => href.startsWith('http');
+---
+
+<div class="hero">
+  <div class="hero__sheet">
+    <header class="masthead">
+      <p class="masthead__phone">{phone}</p>
+      <div class="masthead__institution">
+        <p class="masthead__uni">{institution}</p>
+        <p class="masthead__faculty">{faculty}</p>
+      </div>
+    </header>
+
+    <div class="hero__plate">
+      <h1 class="hero__name" lang="vi">
+        <span class="hero__family">{familyName}</span>{' '}<span
+          class="hero__given">{givenName}</span
+        >
+      </h1>
+      <p class="hero__subtitle">{subtitle}</p>
+    </div>
+
+    <nav class="colophon" aria-label="Profile">
+      <span class="colophon__location">{location}</span>
+      {
+        links.map(({ label, href }) => (
+          <a
+            class="colophon__link"
+            href={href}
+            {...(isExternal(href)
+              ? { target: '_blank', rel: 'noopener noreferrer' }
+              : {})}
+          >
+            {label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</div>
+
+<style>
+  .hero {
+    /* svh keeps the sheet inside the visible area on mobile browsers, where
+       the artboard's 100vh would slide under the URL bar. */
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    padding: clamp(26px, 4.4vh, 64px) clamp(26px, 5vw, 96px);
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font-family: var(--font-heading);
+  }
+
+  .hero__sheet {
+    width: 100%;
+    max-width: 1440px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* — masthead — */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .masthead__phone {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(15px, 1.5vw, 21px);
+    letter-spacing: 0.03em;
+    font-feature-settings: 'tnum';
+  }
+
+  .masthead__institution {
+    text-align: right;
+  }
+
+  .masthead__uni {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(15px, 1.55vw, 22px);
+    letter-spacing: 0.035em;
+    line-height: 1.1;
+  }
+
+  .masthead__faculty {
+    margin-top: 3px;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(10.5px, 1vw, 13px);
+    letter-spacing: 0.04em;
+    color: var(--page-ink-soft);
+  }
+
+  /* — centre plate — */
+  .hero__plate {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: clamp(12px, 2vh, 24px);
+    padding: clamp(64px, 16vh, 200px) 0 clamp(56px, 14vh, 170px);
+  }
+
+  .hero__name {
+    font-weight: 500;
+    font-size: clamp(30px, 4.2vw, 62px);
+    line-height: 1.06;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+  }
+
+  .hero__family {
+    text-transform: uppercase;
+  }
+
+  .hero__given {
+    font-variant: small-caps;
+  }
+
+  .hero__subtitle {
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(17px, 2.1vw, 31px);
+    letter-spacing: 0.03em;
+  }
+
+  /* — colophon — */
+  .colophon {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px clamp(20px, 2.4vw, 40px);
+    text-align: center;
+    font-variant: small-caps;
+    font-weight: 500;
+    font-size: clamp(13.5px, 1.25vw, 17px);
+    letter-spacing: 0.06em;
+    font-feature-settings: 'tnum';
+    color: var(--page-ink-muted);
+  }
+
+  .colophon__link {
+    /* Padding grows the pointer/touch target without moving the baseline. */
+    padding: 24px 0 4px;
+    margin-top: -24px;
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .colophon__link:hover,
+  .colophon__link:focus-visible {
+    border-bottom-color: var(--page-rule-hover);
+    color: var(--page-ink);
+  }
+
+  /* — narrow: the artboard's < 680px layout — */
+  @media (max-width: 680px) {
+    .masthead {
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .masthead__institution {
+      display: contents;
+    }
+
+    .masthead__phone {
+      order: 1;
+      margin-top: 4px;
+      font-size: 16px;
+      letter-spacing: 0.035em;
+    }
+
+    .masthead__uni {
+      font-size: 17px;
+    }
+
+    .masthead__faculty {
+      margin-top: 0;
+      font-size: 11.5px;
+    }
+  }
+</style>
